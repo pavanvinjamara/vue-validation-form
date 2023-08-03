@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app">
+      <form>
+        <!-- Input field for Name -->
+        <div>
+          <label for="name">Name:</label>
+          <!-- Using v-model.trim to bind the name input to the "name" data property
+                   .trim modifier automatically trims any leading/trailing spaces from the input -->
+          <input
+            type="text"
+            id="name"
+            v-model.trim="name"
+            @input="validateName"
+            :style="{ border: nameError ? '1px solid red' : '' }"
+          />
+          <!-- Displaying an error message if nameError is true -->
+          <span v-if="nameError">Invalid name</span>
+        </div>
+
+        <!-- Input field for Email -->
+        <div>
+          <label for="email">Email:</label>
+          <!-- Using v-model.trim to bind the email input to the "email" data property
+                   .trim modifier automatically trims any leading/trailing spaces from the input -->
+          <input
+            type="text"
+            id="email"
+            v-model.trim="email"
+            @input="validateEmail"
+            :style="{ border: emailError ? '1px solid red' : '' }"
+          />
+          <!-- Displaying an error message if emailError is true -->
+          <span v-if="emailError">Invalid email</span>
+        </div>
+
+        <!-- Input field for Phone Number -->
+        <div>
+          <label for="phone">Phone Number:</label>
+          <!-- Using v-model.trim to bind the phone input to the "phone" data property
+                   .trim modifier automatically trims any leading/trailing spaces from the input -->
+          <input
+            type="text"
+            id="phone"
+            v-model.trim="phone"
+            @input="validatePhone"
+            :style="{ border: phoneError ? '1px solid red' : '' }"
+          />
+          <!-- Displaying an error message if phoneError is true -->
+          <span v-if="phoneError">Invalid phone number</span>
+        </div>
+
+        <!-- Textarea field for Address -->
+        <div>
+          <label for="address">Address:</label>
+          <!-- Using v-model.trim to bind the address textarea to the "address" data property
+                   .trim modifier automatically trims any leading/trailing spaces from the input -->
+          <textarea
+            id="address"
+            v-model.trim="address"
+            @input="validateAddress"
+            :style="{ border: addressError ? '1px solid red' : '' }"
+          ></textarea>
+          <!-- Displaying an error message if addressError is true -->
+          <span v-if="addressError">Address is required</span>
+        </div>
+
+        <!-- Submit button -->
+        <button type="button" @click="handleSubmit">Submit</button>
+      </form>
+    </div>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+      const app = Vue.createApp({
+        data() {
+          return {
+            // Data properties that store the values of form inputs
+            name: "",
+            email: "",
+            phone: "",
+            address: "",
+            // Data properties that represent the validation errors for form inputs
+            nameError: false,
+            emailError: false,
+            phoneError: false,
+            addressError: false,
+          };
+        },
+        methods: {
+          // Method to validate the Name input
+          validateName() {
+            // Checking if the name is empty or contains non-alphabetic characters
+            this.nameError =
+              this.name.trim().length < 1 || !/^[a-zA-Z]+$/.test(this.name);
+          },
+          // Method to validate the Email input
+          validateEmail() {
+            // Using a regular expression to check if the email format is valid
+            this.emailError = !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.email);
+          },
+          // Method to validate the Phone Number input
+          validatePhone() {
+            // Using a regular expression to check if the phone number contains only digits
+            this.phoneError = !/^\d+$/.test(this.phone);
+          },
+          // Method to validate the Address textarea
+          validateAddress() {
+            // Checking if the address is empty
+            this.addressError = this.address.trim().length < 1;
+          },
+          // Method to handle the form submission
+          handleSubmit() {
+            // Check if there are any validation errors
+            if (
+              this.nameError ||
+              this.emailError ||
+              this.phoneError ||
+              this.addressError
+            ) {
+              return; // Return early if there are errors
+            }
+
+            // All validations passed, create the object with form data and clear the input fields
+            const formData = {
+              name: this.name,
+              email: this.email,
+              phone: this.phone,
+              address: this.address,
+            };
+
+            // Do something with the formData, e.g., submit it to the server
+
+            // Clear the input fields after form submission
+            this.name = "";
+            this.email = "";
+            this.phone = "";
+            this.address = "";
+          },
+        },
+      });
+      app.mount("#app");
+    </script>
+  </body>
+</html>
